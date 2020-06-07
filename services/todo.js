@@ -8,41 +8,56 @@ var Todo = {
       db.run("CREATE TABLE todo (id INTEGER PRIMARY KEY AUTOINCREMENT, content TEXT, state TEXT)");
     });
   },
-  dispatch: (action, payload, callback) => {
+  dispatch: (action, payload) => {
     switch (action) {
       case "get":
-        db.serialize(function() {
-          db.all("SELECT id, content, state FROM todo", (err, rows) => {
-            callback(rows);
+        return new Promise((resolve, reject) => {
+          db.serialize(function() {
+            db.all("SELECT id, content, state FROM todo", (err, rows) => {
+              if(err) reject(err);
+              resolve(rows);
+            });
           });
         });
         break;
       case "add":
-        db.serialize(function() {
-          var query = db.prepare('INSERT INTO todo (content, state) VALUES (?, ?)')
-          query.run(payload.content, "", (err) => {
-            callback(this.lastID);
+        return new Promise((resolve, reject) => {
+          db.serialize(function() {
+            var query = db.prepare('INSERT INTO todo (content, state) VALUES (?, ?)')
+            query.run(payload.content, "", (err) => {
+              if(err) reject(err);
+              resolve(this.lastID);
+            });
           });
         });
         break;
       case "remove":
-        db.serialize(function() {
-          db.run(`DELETE FROM todo WHERE id = ${payload.id}`, (err) => {
-            callback(payload.id);
+        return new Promise((resolve, reject) => {
+          db.serialize(function() {
+            db.run(`DELETE FROM todo WHERE id = ${payload.id}`, (err) => {
+              if(err) reject(err);
+              resolve(payload.id);
+            });
           });
         });
         break;
       case "done":
-        db.serialize(function() {
-          db.run("UPDATE todo SET state = ? WHERE id = ?", "done", payload.id, (err) => {
-            callback(null);
+        return new Promise((resolve, reject) => {
+          db.serialize(function() {
+            db.run("UPDATE todo SET state = ? WHERE id = ?", "done", payload.id, (err) => {
+              if(err) reject(err);
+              resolve(null);
+            });
           });
         });
         break;
       case "reset":
-        db.serialize(function() {
-          db.run("UPDATE todo SET state = ? WHERE id = ?", "", payload.id, (err) => {
-            callback(null);
+        return new Promise((resolve, reject) => {
+          db.serialize(function() {
+            db.run("UPDATE todo SET state = ? WHERE id = ?", "", payload.id, (err) => {
+              if(err) reject(err);
+              resolve(null);
+            });
           });
         });
         break;
