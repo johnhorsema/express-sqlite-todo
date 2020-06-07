@@ -18,6 +18,7 @@
   "homepage": "https://github.com/johnhorsema/flatend-todo#readme",
   "dependencies": {
     "esm": "^3.2.25",
+    "express": "^4.17.1",
     "sqlite3": "^4.2.0"
   }
 }
