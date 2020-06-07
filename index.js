@@ -1,4 +1,4 @@
 import Flatend from "flatend";
-import Todo from "./services/todo";
+import { Todo } from "./services/todo";
 
 Flatend.register(Todo)
