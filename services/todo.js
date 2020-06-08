@@ -1,6 +1,6 @@
 // Microservice - Todo
 import sqlite3 from "sqlite3";
-const db = new sqlite3.Database(':memory:');
+const db = new sqlite3.Database(":memory:");
 
 var Todo = {
   init: () => {
@@ -23,7 +23,7 @@ var Todo = {
       case "add":
         return new Promise((resolve, reject) => {
           db.serialize(function() {
-            var query = db.prepare('INSERT INTO todo (content, state) VALUES (?, ?)')
+            var query = db.prepare("INSERT INTO todo (content, state) VALUES (?, ?)")
             query.run(payload.content, "", (err) => {
               if(err) reject(err);
               resolve(this.lastID);

@@ -4,6 +4,10 @@ import { Todo } from "./services/todo";
 
 app.use(express.static("public"));
 
+app.get("/", (request, response) => {
+  response.sendFile(__dirname + "/public/index.html");
+});
+
 app.get("/all", async (request, response) => {
   var data = await Todo.dispatch("get")
   response.json(data)
@@ -30,7 +34,7 @@ app.get("/done/:id", async (request, response) => {
   response.send(`Done todo '${request.params.id}'.`);
 });
 
-const listener = app.listen(3000, () => {
+const listener = app.listen(8080, () => {
   Todo.init();
   console.log("Your app is listening on port " + listener.address().port);
 });

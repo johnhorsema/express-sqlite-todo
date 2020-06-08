@@ -1,0 +1,1 @@
+npx esbuild --bundle --minify --loader:.js=jsx --define:process.env.NODE_ENV='"production"' --define:global=window --outfile=public/main.js src/main.js
